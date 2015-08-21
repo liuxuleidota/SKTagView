@@ -48,6 +48,7 @@ static NSString *const kTagsTableCellReuseIdentifier = @"TagsTableCell";
     cell.tagView.padding    = UIEdgeInsetsMake(12, 12, 12, 12);
     cell.tagView.insets    = 15;
     cell.tagView.lineSpace = 10;
+    [cell.tagView setEditable:YES];
     
     [cell.tagView removeAllTags];
     

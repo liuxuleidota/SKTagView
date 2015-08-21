@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SKTagView"
-  s.version      = "0.7"
+  s.version      = "0.8"
   s.license      = "MIT"
   s.summary      = "SKTagView is a view supports to display tags with auto layout."
   s.homepage     = "http://github.com/zsk425/SKTagView"

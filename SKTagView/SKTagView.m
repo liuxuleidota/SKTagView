@@ -11,9 +11,10 @@
 
 #define SAVE_C(c) [self.tagsContraints addObject:c]
 
-@interface SKTagView ()
+@interface SKTagView () <UITextFieldDelegate>
 @property (nonatomic, strong) NSMutableArray *tagsConstraints;
 @property (nonatomic, strong) NSMutableArray *tags;
+@property (nonatomic, strong) UITextField    *editTag;
 @property (nonatomic) BOOL didSetup;
 @end
 
@@ -109,7 +110,7 @@
 #pragma mark - Private methods
 -(void)updateWrappingConstrains
 {
-    if (self.didSetup || !self.tags.count)
+    if (self.didSetup || (!self.tags.count && !self.editTag))
     {
         return;
     }
@@ -272,7 +273,11 @@
 {
     SKTagButton *btn = [SKTagButton buttonWithTag:tag];
     [btn addTarget:self action:@selector(onTag:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:btn];
+    if (self.editTag) {
+        [self insertSubview:btn belowSubview:self.editTag];
+    } else {
+        [self addSubview:btn];
+    }
     [self.tags addObject:tag];
     
     self.didSetup = NO;
@@ -331,11 +336,36 @@
     [self.tags removeAllObjects];
     for (UIView *v in self.subviews)
     {
-        [v removeFromSuperview];
+        if (![v isEqual:self.editTag]) {
+            [v removeFromSuperview];
+        }
     }
     
     self.didSetup = NO;
     [self invalidateIntrinsicContentSize];
+}
+
+- (void)setEditable:(NSString*)placeholder
+{
+    self.editTag = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 30, 20)];
+    [self.editTag setPlaceholder:placeholder];
+    self.editTag.delegate = self;
+    [self addSubview:self.editTag];
+}
+
+// UITextFiledDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.editTag resignFirstResponder];
+    if (self.delegate) {
+        [self.delegate newTag:self.editTag.text];
+    }
+    [self.editTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.lessThanOrEqualTo(@(120));
+    }];
+    
+    self.editTag.text = @"";
+    return YES;
 }
 
 @end

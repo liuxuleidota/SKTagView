@@ -37,6 +37,8 @@
         view.padding    = UIEdgeInsetsMake(12, 12, 12, 12);
         view.insets    = 15;
         view.lineSpace = 10;
+        [view setEditable:YES];
+
         __weak SKTagView *weakView = view;
         view.didClickTagAtIndex = ^(NSUInteger index){
             //Remove tag
