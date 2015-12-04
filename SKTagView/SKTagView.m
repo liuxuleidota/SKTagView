@@ -242,6 +242,14 @@
     return _tags;
 }
 
+- (NSMutableArray*)btns{
+    if (!_btns) {
+        _btns = [NSMutableArray array];
+    }
+
+    return _btns;
+}
+
 - (NSMutableArray *)tagsContraints
 {
     if(!_tagsConstraints)
@@ -279,7 +287,8 @@
         [self addSubview:btn];
     }
     [self.tags addObject:tag];
-    
+    [self.btns addObject:btn];
+
     self.didSetup = NO;
     [self invalidateIntrinsicContentSize];
 }
@@ -296,7 +305,8 @@
         [btn addTarget:self action:@selector(onTag:) forControlEvents:UIControlEventTouchUpInside];
         [self insertSubview:btn atIndex:index];
         [self.tags insertObject:tag atIndex:index];
-        
+        [self.btns insertObject:btn atIndex:index];
+
         self.didSetup = NO;
         [self invalidateIntrinsicContentSize];
     }
